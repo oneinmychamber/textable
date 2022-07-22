@@ -53,64 +53,18 @@ public:
     using RowNumber    = Row::size_type;
     using ColumnNumber = Table::size_type;
 
-    //! Sets a value to the cell referred by the given \p row and \p column.
-    /*!
-        If table doesn't have the referred cell a new row and/or column will be added.
-        If such cell already exists, the \p value will be overwritten.
-        \param row    The row number
-        \param column The column number
-        \param value  A value. The type should be convertible to string.
-    */
     template<typename T>
     void setCell(RowNumber row, ColumnNumber column, T && value);
 
-    //! Sets a complete row values.
-    /*!
-        Allows to set up a complete row at once. The \p rowData is a container
-        of the cell values. Normally it should be one of the standard container types
-        like std::vector.
-        \param row     The row number
-        \param rowData A container whose elements should be convertible to string.
-        \example
-            Textable textable;
-            textable.setRow(1, std::vector<std::string>{ "first", "second", "third" });
-    */
     template<typename T, typename U = typename std::decay<decltype(*begin(std::declval<T>()))>::type>
     void setRow(RowNumber row, T && rowData);
 
-    //! Populates a row with values of arbitrary types.
-    /*!
-        The number of the function arguments and their types is not defined.
-        \param row The row number
-        \example
-            Textable textable;
-            textable.setRow(7, 1, 2.2f, 3.3, "four");
-    */
     template<typename Value, typename... Ts>
     void setRow(RowNumber row, Value && value, Ts &&... restValues);
 
-    //! Sets a complete column values.
-    /*!
-        Allows to set up a complete table column at once. The \p columnData is a container
-        of cell values. Normally it should be one of the standard container types
-        like std::vector.
-        \param column     The column number
-        \param columnData A container whose elements should be convertible to string.
-        \example
-            Textable textable;
-            textable.setColumn(3, std::vector<double>{ 0.0, 1.1, 2.2 });
-    */
     template<typename T, typename U = typename std::decay<decltype(*begin(std::declval<T>()))>::type>
     void setColumn(ColumnNumber column, T && columnData);
 
-    //! Populates a column with values of arbitrary types.
-    /*!
-        The number of the function arguments and their types is not defined.
-        \param column The column number
-        \example
-            Textable textable;
-            textable.setColumn(12, 1, 2.2f, 3.3, "four");
-    */
     template<typename Value, typename... Ts>
     void setColumn(ColumnNumber column, Value && value, Ts &&... restValues);
 
@@ -120,11 +74,6 @@ public:
     //! Returns the number of columns of the table.
     ColumnNumber columnCount() const;
 
-    //! Returns a cell value (string) that corresponds to the given \p row and \p column.
-    /*!
-        \returns Returns a cell value (string) that corresponds to the given row and column or
-                 an empty string if row or column are out or range.
-    */
     std::string cellValue(RowNumber row, ColumnNumber column) const;
 
     friend std::ostream &operator<<(std::ostream &os, const Textable &table);
